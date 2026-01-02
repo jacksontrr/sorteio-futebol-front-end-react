@@ -11,6 +11,8 @@ import { Toaster } from '@/components/ui/sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const VITE_GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
+const BASE_URL = import.meta.env.BASE_URL || '/';
+
 // Definição das rotas
 const router = createBrowserRouter([
     { path: '/', element: <Navigate to="/login" replace /> },
@@ -18,7 +20,9 @@ const router = createBrowserRouter([
     { path: '/register', element: <PublicRoute element={<RegisterPage />} /> },
     { path: '/organizer', element: <ProtectedRoute element={<OrganizerDashboard />} /> },
     { path: '/sorteio/:id', element: <SorteioPublicView /> },
-]);
+], {
+    basename: BASE_URL,
+});
 
 // Monta o app no #root
 ReactDOM.createRoot(document.getElementById('root')!).render(
