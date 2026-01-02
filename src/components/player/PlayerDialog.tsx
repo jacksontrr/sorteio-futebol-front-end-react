@@ -9,7 +9,6 @@ import {
     DialogClose,
     DialogPortal,
 } from '@/components/ui/dialog';
-import Player from '@/components/player/Player';
 import PlayerForm from '@/components/player/PlayerForm';
 import type { PlayerFormData } from '@/models/player';
 import type { Team } from '@/models/team';
@@ -33,7 +32,7 @@ type Props = {
     onSave: (payload: PlayerFormData) => Promise<void> | void;
 };
 
-export default function PlayerDialog({ open, onOpenChange, selected, times, onSave }: Props) {
+export default function PlayerDialog({ open, onOpenChange, selected, onSave }: Props) {
     const formRef = React.useRef<{ submit: () => Promise<PlayerFormData | null> } | null>(null);
 
     const defaultValues = {

@@ -5,6 +5,7 @@ import type { PlayerFormData, Player } from "@/models/player";
 export interface UserProfile {
   nome: string;
   email: string;
+  codigo: string;
   contaGoogle: boolean;
 }
 
@@ -13,7 +14,7 @@ export async function registerOrganizador(data: OrganizerFormData): Promise<Orga
 }
 
 export async function registerJogador(data: PlayerFormData): Promise<
-  Pick<Player, "id" | "nome" | "time" | "observacoes"> & {
+  Pick<Player, "id" | "nome" | "observacoes"> & {
     posicoes: string[];
     organizador: { id: string; nome: string; codigo: string };
   }

@@ -1,33 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { Campeonato } from '@/models/campeonato';
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableRow,
-    TableHead,
-    TableCell,
-} from '@/components/ui/table';
-import React from 'react';
-import { toast } from 'sonner';
-import { computeStandings, type MatchRow, type StandingRow } from '@/lib/standings';
 import { SorteiosList } from '@/components/organizer/SorteiosList';
 import { SorteioCreationSection } from '@/components/organizer/SorteioCreationSection';
 import { SorteioDetailSection } from '@/components/organizer/SorteioDetailSection';
 import { useSorteio } from '@/hooks/useSorteio';
 import { useDetalheSorteio } from '@/hooks/useDetalheSorteio';
 import { useSorteiosList } from '@/hooks/useSorteiosList';
-import { buildRoundsFromInitial, advanceWinner } from '@/lib/bracketLogic';
-import { Bracket } from '@/components/organizer/Bracket';
-import type { Time } from '@/models/sorteio';
 
 export default function SorteiosView() {
-    const [campeonatos] = React.useState<Campeonato[]>([]);
-    const [matchesByCamp, setMatchesByCamp] = React.useState<Record<string, MatchRow[]>>({});
-    const [bracketsByCamp, setBracketsByCamp] = React.useState<Record<string, string[][][]>>({});
-
     const sorteioHook = useSorteio();
     const detalheHook = useDetalheSorteio();
     const { sorteios, loadingSorteios, carregarSorteios } = useSorteiosList();
@@ -62,92 +42,6 @@ export default function SorteiosView() {
 
     const handleExpandTeam = async (timeId: number) => {
         await detalheHook.handleExpandTeam(timeId);
-    };
-
-    const times: Time[] = [];
-
-    const handleSetWinner = (
-        campId: string,
-        roundIdx: number,
-        matchIdx: number,
-        winnerId: string,
-    ) => {
-        setBracketsByCamp((prev) => {
-            const next = { ...prev } as Record<string, string[][][]>;
-
-            const existing = prev[campId];
-            const rounds = existing
-                ? existing.map((r) => r.map((p) => [p[0], p[1]]))
-                : buildRoundsFromInitial(campeonatos.find((x) => x.id === campId)?.chave ?? []);
-
-            const updatedRounds = advanceWinner(rounds, roundIdx, matchIdx, winnerId);
-            next[campId] = updatedRounds;
-            return next;
-        });
-    };
-
-    const ResultForm: React.FC<{
-        camp: Campeonato;
-        times: Time[];
-        onAddResult: (m: MatchRow) => void;
-    }> = ({ camp, times, onAddResult }) => {
-        const [home, setHome] = React.useState<string>('');
-        const [away, setAway] = React.useState<string>('');
-        const [homeGoals, setHomeGoals] = React.useState<number>(0);
-        const [awayGoals, setAwayGoals] = React.useState<number>(0);
-
-        const handleAdd = () => {
-            if (!home || !away || home === away) {
-                toast.error('Escolha dois times diferentes!');
-                return;
-            }
-            onAddResult({ home, away, homeGoals, awayGoals });
-            setHomeGoals(0);
-            setAwayGoals(0);
-        };
-
-        return (
-            <div className="flex flex-col gap-2 items-center">
-                <select
-                    value={home}
-                    onChange={(e) => setHome(e.target.value)}
-                    className="px-2 py-1 border rounded"
-                >
-                    <option value="">Selecione o time</option>
-                    {camp.times.map((id) => (
-                        <option key={id} value={id} disabled={id === away}>
-                            {times.find((t) => t.id === id)?.nome ?? id}
-                        </option>
-                    ))}
-                </select>
-                <Input
-                    type="number"
-                    value={homeGoals}
-                    onChange={(e) => setHomeGoals(Number(e.target.value))}
-                    className="w-16"
-                />
-                <span>vs</span>
-                <Input
-                    type="number"
-                    value={awayGoals}
-                    onChange={(e) => setAwayGoals(Number(e.target.value))}
-                    className="w-16"
-                />
-                <select
-                    value={away}
-                    onChange={(e) => setAway(e.target.value)}
-                    className="px-2 py-1 border rounded"
-                >
-                    <option value="">Selecione o time</option>
-                    {camp.times.map((id) => (
-                        <option key={id} value={id} disabled={id === home}>
-                            {times.find((t) => t.id === id)?.nome ?? id}
-                        </option>
-                    ))}
-                </select>
-                <Button onClick={handleAdd}>Adicionar resultado</Button>
-            </div>
-        );
     };
 
     return (
