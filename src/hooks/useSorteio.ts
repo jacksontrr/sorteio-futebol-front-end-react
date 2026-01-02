@@ -125,11 +125,26 @@ export function useSorteio() {
 
         const alloc = distributePlayersToTeams(selected, names);
 
+        const shuffleArray = <T,>(arr: T[]): T[] => {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        };
+
+        const shuffledNames = shuffleArray(names);
+        const shuffledAlloc: typeof alloc = {};
+        shuffledNames.forEach((teamName) => {
+            shuffledAlloc[teamName] = alloc[teamName];
+        });
+
         try {
             const created = await adicionarTimes(state.sorteioId, {
-                times: names.map((nome) => ({
+                times: shuffledNames.map((nome) => ({
                     nome,
-                    jogadorIds: alloc[nome].map((p) => p.id ?? uid('j')),
+                    jogadorIds: shuffledAlloc[nome].map((p) => p.id ?? uid('j')),
                 })),
             });
 
@@ -139,7 +154,7 @@ export function useSorteio() {
             });
 
             updateState({
-                teamsAlloc: alloc,
+                teamsAlloc: shuffledAlloc,
                 teamNamesToIds: teamMapping,
                 sorteioMatches: [],
                 sorteioHome: '',
