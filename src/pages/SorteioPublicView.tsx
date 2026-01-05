@@ -24,6 +24,7 @@ import {
 } from '@/services/sorteio';
 import { ArrowLeft, Users } from 'lucide-react';
 import { computeStandings, type MatchRow } from '@/lib/standings';
+import { getPlayerBackgroundClass, playerBadgeClasses } from '@/components/player/playerColors';
 
 export default function SorteioPublicView() {
     const { id } = useParams<{ id: string }>();
@@ -147,6 +148,14 @@ export default function SorteioPublicView() {
         );
     }, [times, partidas]);
 
+    const playerTone = (jogador: TimeJogadorDto) =>
+        getPlayerBackgroundClass({
+            destaque: jogador.destaque,
+            peso: jogador.peso,
+            ativo: jogador.ativo ?? true,
+            baseWhenNeutral: '',
+        });
+
     if (loading) {
         return (
             <div className="container mx-auto p-4">
@@ -209,14 +218,26 @@ export default function SorteioPublicView() {
                                             {teamJogadores[time.id].map((jogador) => (
                                                 <li
                                                     key={jogador.id}
-                                                    className="text-sm text-muted-foreground"
+                                                    className={`text-sm text-muted-foreground rounded-md px-2 py-1 ${playerTone(jogador)}`}
                                                 >
-                                                    {jogador.nome}
+                                                    <span className="font-medium text-foreground mr-2">
+                                                        {jogador.nome}
+                                                    </span>
                                                     {jogador.posicoes.length > 0 && (
-                                                        <span className="ml-2 text-xs">
+                                                        <span className="text-xs text-muted-foreground">
                                                             ({jogador.posicoes.join(', ')})
                                                         </span>
                                                     )}
+                                                    <span className="ml-2 inline-flex gap-1 align-middle">
+                                                        {jogador.destaque && (
+                                                            <span className={playerBadgeClasses.destaque}>
+                                                                Destaque
+                                                            </span>
+                                                        )}
+                                                        {jogador.peso && (
+                                                            <span className={playerBadgeClasses.peso}>Peso</span>
+                                                        )}
+                                                    </span>
                                                 </li>
                                             ))}
                                         </ul>

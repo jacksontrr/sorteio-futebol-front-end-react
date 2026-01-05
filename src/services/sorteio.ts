@@ -46,6 +46,9 @@ export interface TimeJogadorDto {
     id: number;
     nome: string;
     posicoes: string[];
+    destaque?: boolean;
+    peso?: boolean;
+    ativo?: boolean;
 }
 
 export async function criarSorteio(req: CriarSorteioRequest): Promise<number> {
