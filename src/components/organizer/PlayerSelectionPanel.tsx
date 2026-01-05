@@ -9,6 +9,7 @@ import {
     TableCell,
 } from '@/components/ui/table';
 import type { Player } from '@/models/player';
+import { playerBadgeClasses } from '../player/playerColors';
 
 export interface PlayerSelectionPanelProps {
     players: Player[];
@@ -43,6 +44,9 @@ export function PlayerSelectionPanel({
 
     const paid = filtered.filter((p) => paidIds.has(String(p.id)));
     const unpaid = filtered.filter((p) => !paidIds.has(String(p.id)));
+
+    const renderBadge = (condition: boolean, label: string, className: string) =>
+        condition ? <span className={className}>{label}</span> : <span className="text-xs text-muted-foreground">—</span>;
 
     return (
         <div className="grid gap-4 md:grid-cols-2">
@@ -81,8 +85,20 @@ export function PlayerSelectionPanel({
                                     <TableRow key={String(p.id)}>
                                         <TableCell>{p.nome}</TableCell>
                                         <TableCell>{positions.join(', ')}</TableCell>
-                                        <TableCell>{isDestaque(p) ? 'Sim' : 'Não'}</TableCell>
-                                        <TableCell>{isPeso(p) ? 'Sim' : 'Não'}</TableCell>
+                                        <TableCell>
+                                            {renderBadge(
+                                                isDestaque(p),
+                                                'Destaque',
+                                                playerBadgeClasses.destaque,
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {renderBadge(
+                                                isPeso(p),
+                                                'Peso',
+                                                playerBadgeClasses.peso,
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             <Button
                                                 size="sm"
@@ -130,8 +146,20 @@ export function PlayerSelectionPanel({
                                     <TableRow key={String(p.id)}>
                                         <TableCell>{p.nome}</TableCell>
                                         <TableCell>{positions.join(', ')}</TableCell>
-                                        <TableCell>{isDestaque(p) ? 'Sim' : 'Não'}</TableCell>
-                                        <TableCell>{isPeso(p) ? 'Sim' : 'Não'}</TableCell>
+                                        <TableCell>
+                                            {renderBadge(
+                                                isDestaque(p),
+                                                'Destaque',
+                                                playerBadgeClasses.destaque,
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {renderBadge(
+                                                isPeso(p),
+                                                'Peso',
+                                                playerBadgeClasses.peso,
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             <Button
                                                 size="sm"

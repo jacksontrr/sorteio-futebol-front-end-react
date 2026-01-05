@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import PlayerDialog from '@/components/player/PlayerDialog';
 import Player from '@/components/player/Player';
+import { getPlayerBackgroundClass } from '@/components/player/playerColors';
 import type { PlayerFormData } from '@/models/player';
 import {
     Table,
@@ -43,6 +44,17 @@ export default function JogadoresView() {
     const [search, setSearch] = React.useState('');
     const [loadingJogadores, setLoadingJogadores] = React.useState(false);
     const [togglingId, setTogglingId] = React.useState<string | null>(null);
+
+    const rowTone = (j: Jogador) =>
+        getPlayerBackgroundClass({ destaque: j.destaque, peso: j.peso, ativo: j.ativo });
+
+    const cardTone = (j: Jogador) =>
+        getPlayerBackgroundClass({
+            destaque: j.destaque,
+            peso: j.peso,
+            ativo: j.ativo,
+            baseWhenNeutral: 'bg-white',
+        });
 
     function addJogador() {
         setSelectedJogador(null);
@@ -172,21 +184,15 @@ export default function JogadoresView() {
                                         {jogadores.map((j) => (
                                             <TableRow
                                                 key={j.id}
-                                                className={
-                                                    j.ativo
-                                                        ? j.destaque
-                                                            ? 'bg-green-300'
-                                                            : j.peso
-                                                            ? 'bg-red-300'
-                                                            : ''
-                                                        : 'opacity-50'
-                                                }
+                                                className={rowTone(j)}
                                             >
                                                 <TableCell>
                                                     <div className="max-w-xl">
                                                         <Player
                                                             nome={j.nome}
                                                             posicoes={j.posicoes}
+                                                            destaque={j.destaque}
+                                                            peso={j.peso}
                                                         />
                                                     </div>
                                                 </TableCell>
@@ -233,8 +239,16 @@ export default function JogadoresView() {
                                     <div className="p-4">Nenhum jogador encontrado.</div>
                                 )}
                                 {jogadores.map((j) => (
-                                    <div key={j.id} className="p-3 bg-white rounded-lg shadow-sm">
-                                        <Player nome={j.nome} posicoes={j.posicoes} />
+                                    <div
+                                        key={j.id}
+                                        className={`p-3 rounded-lg shadow-sm ${cardTone(j)}`}
+                                    >
+                                        <Player
+                                            nome={j.nome}
+                                            posicoes={j.posicoes}
+                                            destaque={j.destaque}
+                                            peso={j.peso}
+                                        />
                                         <div className="mt-2 flex justify-end">
                                             <button
                                                 className="text-primary underline"

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Player } from '@/models/player';
+import { playerBadgeClasses } from '../player/playerColors';
 
 export interface GeneratedTeamsDisplayProps {
     teams: Record<string, Player[]>;
@@ -32,14 +33,10 @@ export function GeneratedTeamsDisplay({ teams }: GeneratedTeamsDisplayProps) {
                                     <li key={String(pl.id)} className="flex items-center gap-2">
                                         <span>{pl.nome}</span>
                                         {isDestaque(pl) && (
-                                            <span className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-medium">
-                                                Destaque
-                                            </span>
+                                            <span className={playerBadgeClasses.destaque}>Destaque</span>
                                         )}
                                         {isPeso(pl) && (
-                                            <span className="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-medium">
-                                                Peso
-                                            </span>
+                                            <span className={playerBadgeClasses.peso}>Peso</span>
                                         )}
                                     </li>
                                 ))}
