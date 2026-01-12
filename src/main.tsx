@@ -17,6 +17,24 @@ import { IOSInstallPrompt } from './components/IOSInstallPrompt';
 const VITE_GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 const BASE_URL = import.meta.env.BASE_URL || '/';
 
+function refreshServiceWorkers() {
+  if (!("serviceWorker" in navigator)) return;
+
+  window.addEventListener("load", async () => {
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((r) => r.update()));
+      registrations.forEach((r) => {
+        if (r.waiting) r.waiting.postMessage({ type: "SKIP_WAITING" });
+      });
+    } catch (err) {
+      console.warn("SW update check falhou:", err);
+    }
+  });
+}
+
+refreshServiceWorkers();
+
 // Definição das rotas
 const router = createBrowserRouter([
     { path: '/', element: <LandingPage /> },

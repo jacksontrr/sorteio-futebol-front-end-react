@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Download } from 'lucide-react';
-import { IOSInstructionsModal } from '@/components/IOSInstructionsModal';
+import { IOSInstallPrompt } from '@/components/IOSInstallPrompt';
 import JogadoresView from './JogadoresView';
 import SorteiosView from './SorteiosView';
 import UsuarioView from './UsuarioView';
@@ -13,7 +13,6 @@ import { fetchUserData, type OrganizadorResponse } from '@/services/user';
 import { useInstallPrompt } from '@/hooks/useInstallPrompt';
 
 export default function OrganizerDashboard() {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const navigate = useNavigate();
     const { canInstall, installApp } = useInstallPrompt();
     const [view, setView] = React.useState<'times' | 'jogadores' | 'campeonatos' | 'usuario'>(
@@ -21,7 +20,6 @@ export default function OrganizerDashboard() {
     );
     const [userData, setUserData] = React.useState<OrganizadorResponse | null>(null);
     const [loading, setLoading] = React.useState(true);
-    const [showIOSInstructions, setShowIOSInstructions] = React.useState(false);
 
     // Carrega os dados do usuário ao montar o componente
     React.useEffect(() => {
@@ -88,15 +86,7 @@ export default function OrganizerDashboard() {
                                 <span>Instalar App</span>
                             </button>
                         )}
-                        {isIOS && (
-                            <button
-                                onClick={() => setShowIOSInstructions(true)}
-                                className="w-full mt-2 px-3 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 border border-blue-400/50"
-                                title="Ver instruções de instalação para iPhone"
-                            >
-                                Como Colocar App no iPhone
-                            </button>
-                        )}
+
                     </div>
                 ) : null}
                 <nav className="flex md:flex-col gap-2 overflow-x-auto">
@@ -143,10 +133,7 @@ export default function OrganizerDashboard() {
             </main>
 
             {/* Modal de instruções do iOS */}
-            <IOSInstructionsModal 
-              isOpen={showIOSInstructions} 
-              onClose={() => setShowIOSInstructions(false)}
-            />
+            <IOSInstallPrompt />
         </div>
     );
 }
