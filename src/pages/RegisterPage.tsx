@@ -3,8 +3,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { GoogleLogin } from '@react-oauth/google';
+import { loginWithGoogle } from '@/services/auth';
+import { Loader2 } from 'lucide-react';
 
 // shadcn/ui components
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -125,6 +128,7 @@ function OrganizerForm({
 
 export default function RegisterPage() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const token = (location.state as { token?: string } | null)?.token ?? searchParams.get('token');
     const [role, setRole] = React.useState<'organizador' | 'jogador'>(
@@ -134,6 +138,7 @@ export default function RegisterPage() {
     const [organizerCode, setOrganizerCode] = React.useState<string | null>(null);
     const [loadingOrg, setLoadingOrg] = React.useState(false);
     const [loadingPlayer, setLoadingPlayer] = React.useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
     const playerFormRef = React.useRef<{ submit: () => Promise<PlayerFormData | null> } | null>(
         null,
@@ -211,6 +216,40 @@ export default function RegisterPage() {
         }
     }
 
+    const onGoogleSuccess = async ({
+        clientId,
+        credential,
+    }: {
+        clientId?: string;
+        credential: string;
+    }) => {
+        const effectiveClientId = clientId || (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
+
+        if (!effectiveClientId) {
+            toast.error('Erro de configuração do Google Login');
+            return;
+        }
+
+        setIsGoogleLoading(true);
+        try {
+            const res = await loginWithGoogle(effectiveClientId, credential);
+            const token = (res as { token?: string })?.token;
+            if (token) {
+                sessionStorage.setItem('token', token);
+                toast.success('Conta criada com sucesso!');
+                navigate('/organizer');
+            } else {
+                toast.error('Erro ao processar autenticação');
+            }
+        } catch (err: any) {
+            const message =
+                err?.response?.data?.message || err?.message || 'Erro ao fazer login com Google. Tente novamente.';
+            toast.error(message);
+        } finally {
+            setIsGoogleLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-[calc(100dvh-4rem)] grid place-items-center p-4 bg-gradient-to-br from-green-50 via-white to-blue-50">
             <motion.div
@@ -255,7 +294,38 @@ export default function RegisterPage() {
                             </div>
                         )}
                         {role === 'organizador' ? (
-                            <OrganizerForm onSubmit={handleOrganizerSubmit} />
+                            <>
+                                <OrganizerForm onSubmit={handleOrganizerSubmit} />
+                                
+                                <div className="relative my-4 text-center text-sm text-muted-foreground">
+                                    <span className="bg-white px-2 relative z-10">ou</span>
+                                    <div className="absolute inset-0 flex items-center">
+                                        <span className="w-full border-t" />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-center">
+                                    {isGoogleLoading ? (
+                                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                            Autenticando com Google...
+                                        </div>
+                                    ) : (
+                                        <GoogleLogin
+                                            onSuccess={(response) => {
+                                                if (!response.credential) return;
+                                                onGoogleSuccess({
+                                                    clientId: response.clientId,
+                                                    credential: response.credential,
+                                                });
+                                            }}
+                                            onError={() => {
+                                                toast.error('Erro ao autenticar com Google. Tente novamente.');
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            </>
                         ) : (
                             <div>
                                 <PlayerForm
