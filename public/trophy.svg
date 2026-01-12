@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Troféu">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd54f"/>
+      <stop offset="100%" stop-color="#f6a000"/>
+    </linearGradient>
+    <linearGradient id="base" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#263238"/>
+      <stop offset="100%" stop-color="#11171a"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="#b37800" stroke-width="12" stroke-linejoin="round">
+    <path fill="url(#gold)" d="M160 64h192v80c0 64-48 120-96 136-48-16-96-72-96-136z"/>
+    <path fill="url(#gold)" d="M160 112c-32 0-64 0-64 32 0 54 48 94 88 104"/>
+    <path fill="url(#gold)" d="M352 112c32 0 64 0 64 32 0 54-48 94-88 104"/>
+    <path fill="#fef3c7" d="M240 288h32v48h-32z"/>
+    <path fill="url(#base)" d="M192 368h128v32H192z"/>
+    <path fill="url(#base)" d="M176 400h160v32H176z"/>
+    <circle fill="#fff7e6" cx="256" cy="136" r="24" stroke="#b37800" stroke-width="10"/>
+  </g>
+</svg>
