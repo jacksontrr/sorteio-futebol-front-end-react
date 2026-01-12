@@ -46,10 +46,15 @@ export default function LandingPage() {
                             Sorteio de times de futebol
                             <span className="text-green-600"> automatizado e justo</span>
                         </h1>
-                        <p className="text-xl text-gray-600 mb-8">
+                        <p className="text-xl text-gray-600 mb-4">
                             Distribua jogadores em times de forma equilibrada usando sistema de pesos e destaques. 
                             Gerencie partidas, acompanhe pontos corridos e compartilhe resultados publicamente.
                         </p>
+                        <div className="bg-blue-50 border-l-4 border-blue-600 p-4 mb-8 rounded-r-lg">
+                            <p className="text-lg text-blue-900 font-semibold">
+                                💾 Cadastre jogadores UMA VEZ. Reutilize em TODOS os sorteios.
+                            </p>
+                        </div>
                         <div>
                             <Link to="/register">
                                 <Button size="lg" className="bg-green-600 hover:bg-green-700">
@@ -77,18 +82,8 @@ export default function LandingPage() {
                                         <Trophy className="h-6 w-6 text-green-600" />
                                     </div>
                                     <div>
-                                        <p className="font-semibold">Copa dos Amigos 2026</p>
-                                        <p className="text-sm text-gray-500">6 times • 18 jogadores</p>
-                                    </div>
-                                </div>
-                                <div className="border-t pt-4 space-y-2">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-600">Próxima partida</span>
-                                        <span className="font-semibold">Hoje, 18:00</span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-600">Status</span>
-                                        <span className="text-green-600 font-semibold">Em andamento</span>
+                                        <p className="font-semibold text-lg">Bobeira Futebol Clube</p>
+                                        <p className="text-sm text-gray-500">4 times • 24 jogadores</p>
                                     </div>
                                 </div>
                             </div>
@@ -263,6 +258,11 @@ export default function LandingPage() {
 const features = [
     {
         icon: <Users className="h-6 w-6 text-green-600" />,
+        title: 'Banco de Jogadores Permanente',
+        description: 'Cadastre seus jogadores uma única vez e reutilize em infinitos sorteios. Sem retrabalho, sem perda de dados.',
+    },
+    {
+        icon: <Zap className="h-6 w-6 text-green-600" />,
         title: 'Sorteio Inteligente',
         description: 'Sistema de pesos e destaques para distribuir jogadores de forma equilibrada entre os times.',
     },
@@ -282,28 +282,23 @@ const features = [
         description: 'Compartilhe sorteios com link público - jogadores acompanham sem precisar de login.',
     },
     {
-        icon: <Zap className="h-6 w-6 text-green-600" />,
-        title: 'Login Social',
-        description: 'Autenticação via Google OAuth ou credenciais próprias com JWT seguro.',
-    },
-    {
         icon: <Trophy className="h-6 w-6 text-green-600" />,
-        title: 'Gestão de Jogadores',
-        description: 'Cadastre jogadores com posições, pesos, observações e status de ativo/inativo.',
+        title: 'Gestão Completa',
+        description: 'Gerencie jogadores com posições, pesos, observações e status. Organize tudo em um só lugar.',
     },
 ];
 
 const stats = [
-    { value: '2 min', label: 'Para criar sorteio' },
+    { value: '1 min', label: 'Para criar sorteio' },
+    { value: '∞', label: 'Sorteios possíveis' },
     { value: '100%', label: 'Equilibrado' },
-    { value: '0', label: 'Custo' },
-    { value: '24/7', label: 'Disponível' },
+    { value: 'R$ 0', label: 'Custo' },
 ];
 
 const steps = [
     {
-        title: 'Cadastre os jogadores',
-        description: 'Adicione jogadores com nome, posição, peso e destaque para distribuição equilibrada.',
+        title: 'Cadastre jogadores UMA VEZ',
+        description: 'Crie seu banco de jogadores permanente com nome, posição e pesos. Nos próximos sorteios, apenas selecione quem vai jogar.',
     },
     {
         title: 'Realize o sorteio',
