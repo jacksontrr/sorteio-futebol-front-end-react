@@ -24,68 +24,11 @@
         link.href = import.meta.env.BASE_URL + 'manifest.prod.json';
       }
 
-      // Optional in-page debugger: enable in dev or with ?debug
-      const enableDebug = import.meta.env.MODE !== 'production' || new URLSearchParams(location.search).has('debug');
-
-      if (enableDebug) {
-        // On-page debug overlay at the bottom to show logs/errors
-        const overlay = document.createElement('div');
-        overlay.id = 'debug-overlay';
-        overlay.style.cssText = [
-          'position:fixed',
-          'left:0',
-          'right:0',
-          'bottom:0',
-          'max-height:35vh',
-          'overflow:auto',
-          'background:rgba(0,0,0,0.9)',
-          'color:#0f0',
-          'font-family:monospace',
-          'font-size:12px',
-          'line-height:1.4',
-          'padding:8px 10px',
-          'z-index:99999'
-        ].join(';');
-        document.body.appendChild(overlay);
-
-        const appendLine = (text, level = 'log') => {
-          const line = document.createElement('div');
-          const ts = new Date().toISOString().slice(11, 19);
-          line.textContent = `[${ts}] ${level.toUpperCase()} :: ${text}`;
-          line.style.color = level === 'error' ? '#f66' : '#0f0';
-          overlay.appendChild(line);
-          overlay.scrollTop = overlay.scrollHeight;
-        };
-
-        const origLog = console.log;
-        const origError = console.error;
-        console.log = (...args) => { appendLine(args.join(' '), 'log'); origLog.apply(console, args); };
-        console.error = (...args) => { appendLine(args.join(' '), 'error'); origError.apply(console, args); };
-
-        window.addEventListener('error', (e) => appendLine(`ERROR: ${e.message} @ ${e.filename}:${e.lineno}`, 'error'));
-        window.addEventListener('unhandledrejection', (e) => appendLine(`UNHANDLED: ${e.reason}`, 'error'));
-
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/eruda';
-        s.onload = () => { eruda.init(); console.log('[debug] Eruda enabled'); };
-        document.body.appendChild(s);
-      }
-
-      console.log('[debug] MODE', import.meta.env.MODE);
-      console.log('[debug] BASE_URL', import.meta.env.BASE_URL);
-
       if ('serviceWorker' in navigator) {
         const swUrl = import.meta.env.BASE_URL + 'service-worker.js';
-        console.log('[debug] Registering ServiceWorker at', swUrl);
-        navigator.serviceWorker.register(swUrl)
-          .then((reg) => {
-            console.log('[debug] SW registered, scope:', reg.scope);
-            return navigator.serviceWorker.getRegistrations();
-          })
-          .then((regs) => console.log('[debug] Existing SW registrations:', regs.map(r => r.scope)))
-          .catch((err) => console.error('[debug] SW registration failed', err));
-      } else {
-        console.warn('[debug] ServiceWorker not supported');
+        navigator.serviceWorker.register(swUrl).catch(() => {
+          // Quietly ignore registration errors in production; use dev tools if needed
+        });
       }
     </script>
   </body>
