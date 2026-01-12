@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { GoogleLogin } from '@react-oauth/google';
 import { loginWithGoogle } from '@/services/auth';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ChevronLeft, Trophy } from 'lucide-react';
 
 // shadcn/ui components
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -251,44 +251,59 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-[calc(100dvh-4rem)] grid place-items-center p-4 bg-gradient-to-br from-green-50 via-white to-blue-50">
+        <div className="min-h-screen grid place-items-center p-3 sm:p-6 bg-gradient-to-br from-green-50 via-white to-blue-50">
             <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
-                className="w-full max-w-3xl"
+                className="w-full max-w-md"
             >
-                <Card className="rounded-2xl shadow-2xl border-green-100 p-0 pb-6">
-                    <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-2xl">
-                        <CardTitle className="text-2xl">Criar conta</CardTitle>
+                <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    onClick={() => navigate('/')}
+                    className="mb-4 flex items-center gap-2 text-gray-600 hover:text-green-600 transition-colors font-medium text-sm"
+                >
+                    <ChevronLeft className="h-4 w-4" />
+                    <span>Voltar</span>
+                </motion.button>
+
+                <div className="flex items-center justify-center gap-2 mb-6">
+                    <Trophy className="h-10 w-10 text-green-600" />
+                    <span className="text-3xl font-bold text-gray-900">FutebolSort</span>
+                </div>
+
+                <Card className="shadow-2xl border-0 p-0">
+                    <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
+                        <CardTitle className="text-center text-2xl">Criar conta</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-6">
+                    <CardContent className="grid gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-6">
                         {/* Role selector - hide when token is present (collaborator flow) */}
                         {!token && (
-                            <div className="grid gap-2">
-                                <Label>Tipo de conta</Label>
+                            <div className="grid gap-3">
+                                <Label className="text-base font-semibold">Tipo de conta</Label>
                                 <RadioGroup
                                     value={role}
                                     onValueChange={(v: string) =>
                                         setRole(v === 'jogador' ? 'jogador' : 'organizador')
                                     }
-                                    className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                                    className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3"
                                 >
                                     <label
-                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-green-50 ${
-                                            role === 'organizador' ? 'border-blue-500 bg-blue-50' : ''
+                                        className={`flex items-center gap-2 sm:gap-3 rounded-lg sm:rounded-xl border p-2.5 sm:p-3 cursor-pointer hover:bg-blue-50 transition-colors ${
+                                            role === 'organizador' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
                                         }`}
                                     >
                                         <RadioGroupItem value="organizador" />
-                                        <span>Organizador</span>
+                                        <span className="text-sm sm:text-base">Organizador</span>
                                     </label>
                                     <label
-                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-green-50 ${
-                                            role === 'jogador' ? 'border-green-500 bg-green-50' : ''
+                                        className={`flex items-center gap-2 sm:gap-3 rounded-lg sm:rounded-xl border p-2.5 sm:p-3 cursor-pointer hover:bg-green-50 transition-colors ${
+                                            role === 'jogador' ? 'border-green-500 bg-green-50' : 'border-gray-200'
                                         }`}
                                     >
                                         <RadioGroupItem value="jogador" />
-                                        <span>Jogador</span>
+                                        <span className="text-sm sm:text-base">Jogador</span>
                                     </label>
                                 </RadioGroup>
                             </div>
@@ -339,64 +354,65 @@ export default function RegisterPage() {
                             </div>
                         )}
 
-                        {errorMsg && <div className="mt-3 text-sm text-red-600">{errorMsg}</div>}
+                        {errorMsg && <div className="mt-3 text-xs sm:text-sm text-red-600 bg-red-50 p-3 rounded-lg">{errorMsg}</div>}
 
                         {organizerCode && role === 'organizador' && (
-                            <div className="mt-4 rounded-xl bg-green-50 p-3 flex items-center justify-between">
+                            <motion.div 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="mt-4 rounded-lg sm:rounded-xl bg-green-50 p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                            >
                                 <div>
-                                    <div className="text-sm text-muted-foreground">
+                                    <div className="text-xs sm:text-sm text-muted-foreground">
                                         Código do organizador
                                     </div>
-                                    <div className="font-mono font-semibold">{organizerCode}</div>
+                                    <div className="font-mono font-semibold text-sm sm:text-base mt-1">{organizerCode}</div>
                                 </div>
-                                <div>
-                                    <Button
-                                        size="sm"
-                                        variant="ghost"
-                                        onClick={() => navigator.clipboard.writeText(organizerCode)}
-                                    >
-                                        Copiar
-                                    </Button>
-                                </div>
-                            </div>
+                                <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => navigator.clipboard.writeText(organizerCode)}
+                                    className="w-full sm:w-auto"
+                                >
+                                    Copiar
+                                </Button>
+                            </motion.div>
                         )}
                     </CardContent>
-                    <CardFooter className="text-xs text-muted-foreground flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-2">
-                            <Button variant="link" size="sm" asChild>
-                                <Link to="/login">Voltar</Link>
-                            </Button>
-                        </div>
+                    <CardFooter className="text-xs sm:text-sm text-muted-foreground flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 border-t border-gray-100">
+                        <Button 
+                            variant="outline" 
+                            size="sm" 
+                            asChild
+                        >
+                            <Link to="/login">Voltar ao login</Link>
+                        </Button>
                         {role === 'jogador' && (
-                            <div>
-                                <Button
-                                    className="ml-4 bg-green-600 hover:bg-green-700"
-                                    onClick={async () => {
-                                        try {
-                                            setSubmittingPlayer(true);
-                                            await playerFormRef.current?.submit();
-                                            // handlePlayerSubmit will run via the form's onSubmit
-                                        } finally {
-                                            setSubmittingPlayer(false);
-                                        }
-                                    }}
-                                    disabled={submittingPlayer || loadingPlayer}
-                                >
-                                    Cadastrar Jogador
-                                </Button>
-                            </div>
+                            <Button
+                                className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
+                                onClick={async () => {
+                                    try {
+                                        setSubmittingPlayer(true);
+                                        await playerFormRef.current?.submit();
+                                        // handlePlayerSubmit will run via the form's onSubmit
+                                    } finally {
+                                        setSubmittingPlayer(false);
+                                    }
+                                }}
+                                disabled={submittingPlayer || loadingPlayer}
+                            >
+                                {submittingPlayer || loadingPlayer ? 'Cadastrando...' : 'Cadastrar Jogador'}
+                            </Button>
                         )}
                         {role === 'organizador' && (
-                            <div>
-                                <Button
-                                    className="ml-4 bg-blue-600 hover:bg-blue-700"
-                                    form="organizer-form"
-                                    type="submit"
-                                    disabled={loadingOrg}
-                                >
-                                    {loadingOrg ? 'Cadastrando...' : 'Cadastrar como Organizador'}
-                                </Button>
-                            </div>
+                            <Button
+                                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                                form="organizer-form"
+                                type="submit"
+                                disabled={loadingOrg}
+                            >
+                                {loadingOrg ? 'Cadastrando...' : 'Cadastrar'}
+                            </Button>
                         )}
                     </CardFooter>
                 </Card>
