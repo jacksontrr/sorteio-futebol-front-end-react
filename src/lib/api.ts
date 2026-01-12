@@ -81,7 +81,8 @@ export async function apiRequest<T>(
       // Falha no refresh, redirecionar para login
       clearToken();
       if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        window.location.href = `${baseUrl}login`;
       }
       throw new Error('Sessão expirada. Redirecionando para login.');
     }

@@ -3,7 +3,8 @@ import { isAuthenticated } from '@/services/auth';
 
 export function ProtectedRoute({ element }: { element: React.ReactNode }) {
     if (!isAuthenticated()) {
-        return <Navigate to="/login" replace />;
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        return <Navigate to={`${baseUrl}login`} replace />;
     }
 
     return <>{element}</>;
@@ -11,7 +12,8 @@ export function ProtectedRoute({ element }: { element: React.ReactNode }) {
 
 export function PublicRoute({ element }: { element: React.ReactNode }) {
     if (isAuthenticated()) {
-        return <Navigate to="/organizer" replace />;
+        const baseUrl = import.meta.env.BASE_URL || '/';
+        return <Navigate to={`${baseUrl}organizer`} replace />;
     }
     return <>{element}</>;
 }
