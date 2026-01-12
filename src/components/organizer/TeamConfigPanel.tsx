@@ -29,7 +29,7 @@ export function TeamConfigPanel({
                     value={String(teamCount)}
                     onChange={(e) => onTeamCountChange(Number(e.target.value))}
                 />
-                <Button onClick={onGenerate} disabled={disabled}>
+                <Button onClick={onGenerate} disabled={disabled} className="bg-green-600 hover:bg-green-700">
                     Gerar Sorteio
                 </Button>
             </div>

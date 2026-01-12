@@ -83,7 +83,7 @@ export function MatchRegistrationForm({
             </div>
 
             <div className="flex">
-                <Button className="w-full" onClick={onSubmit} disabled={isLoading}>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={onSubmit} disabled={isLoading}>
                     {isLoading ? 'Registrando...' : 'Registrar'}
                 </Button>
             </div>

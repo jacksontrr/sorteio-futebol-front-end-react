@@ -212,15 +212,15 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="min-h-[calc(100dvh-4rem)] grid place-items-center p-4">
+        <div className="min-h-[calc(100dvh-4rem)] grid place-items-center p-4 bg-gradient-to-br from-green-50 via-white to-blue-50">
             <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
                 className="w-full max-w-3xl"
             >
-                <Card className="rounded-2xl shadow-lg">
-                    <CardHeader>
+                <Card className="rounded-2xl shadow-2xl border-green-100 p-0 pb-6">
+                    <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-2xl">
                         <CardTitle className="text-2xl">Criar conta</CardTitle>
                     </CardHeader>
                     <CardContent className="grid gap-6">
@@ -236,16 +236,16 @@ export default function RegisterPage() {
                                     className="grid grid-cols-1 sm:grid-cols-2 gap-3"
                                 >
                                     <label
-                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-muted ${
-                                            role === 'organizador' ? 'border-primary' : ''
+                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-green-50 ${
+                                            role === 'organizador' ? 'border-blue-500 bg-blue-50' : ''
                                         }`}
                                     >
                                         <RadioGroupItem value="organizador" />
                                         <span>Organizador</span>
                                     </label>
                                     <label
-                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-muted ${
-                                            role === 'jogador' ? 'border-primary' : ''
+                                        className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer hover:bg-green-50 ${
+                                            role === 'jogador' ? 'border-green-500 bg-green-50' : ''
                                         }`}
                                     >
                                         <RadioGroupItem value="jogador" />
@@ -300,7 +300,7 @@ export default function RegisterPage() {
                         {role === 'jogador' && (
                             <div>
                                 <Button
-                                    className="ml-4"
+                                    className="ml-4 bg-green-600 hover:bg-green-700"
                                     onClick={async () => {
                                         try {
                                             setSubmittingPlayer(true);
@@ -319,7 +319,7 @@ export default function RegisterPage() {
                         {role === 'organizador' && (
                             <div>
                                 <Button
-                                    className="ml-4"
+                                    className="ml-4 bg-blue-600 hover:bg-blue-700"
                                     form="organizer-form"
                                     type="submit"
                                     disabled={loadingOrg}

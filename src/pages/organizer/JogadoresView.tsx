@@ -148,7 +148,7 @@ export default function JogadoresView() {
                                         }}
                                     />
                                 </label> */}
-                                <Button onClick={addJogador}>Adicionar Jogador</Button>
+                                <Button onClick={addJogador} className="bg-green-600 hover:bg-green-700">Adicionar Jogador</Button>
                             </div>
                         </div>
                         <h1 className="text-2xl font-bold">Jogadores ({jogadores.length})</h1>

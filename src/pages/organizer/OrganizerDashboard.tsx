@@ -47,10 +47,10 @@ export default function OrganizerDashboard() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row mx-auto">
+        <div className="min-h-screen flex flex-col md:flex-row mx-auto bg-gradient-to-br from-green-50/30 via-white to-blue-50/30">
             {/* Sidebar */}
-            <aside className="w-full md:w-56 bg-slate-50 md:border-r border-b p-3 md:p-4">
-                <div className="mb-2 text-lg font-semibold">Organizador</div>
+            <aside className="w-full md:w-56 bg-gradient-to-br from-green-50 to-blue-50 md:border-r border-green-100 border-b p-3 md:p-4">
+                <div className="mb-2 text-lg font-semibold text-green-800">Organizador</div>
                 {loading ? (
                     <div className="mb-4 text-sm text-gray-500">Carregando...</div>
                 ) : userData ? (
@@ -62,7 +62,7 @@ export default function OrganizerDashboard() {
                         <div className="text-xs text-gray-600 mb-1">Seu código:</div>
                         <button
                             onClick={copyUserCode}
-                            className="w-full px-2 py-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded text-sm font-mono text-blue-700 transition-colors text-left"
+                            className="w-full px-2 py-1 bg-green-50 hover:bg-green-100 border border-green-300 rounded text-sm font-mono text-green-700 transition-colors text-left"
                             title="Clique para copiar"
                         >
                             {userData.codigo}
@@ -73,22 +73,25 @@ export default function OrganizerDashboard() {
                     <Button
                         variant={view === 'jogadores' ? 'default' : 'ghost'}
                         onClick={() => setView('jogadores')}
+                        className={view === 'jogadores' ? 'bg-green-600 hover:bg-green-700' : ''}
                     >
                         Jogadores
                     </Button>
                     <Button
                         variant={view === 'campeonatos' ? 'default' : 'ghost'}
                         onClick={() => setView('campeonatos')}
+                        className={view === 'campeonatos' ? 'bg-green-600 hover:bg-green-700' : ''}
                     >
                         Criar Sorteios
                     </Button>
                     <Button
                         variant={view === 'usuario' ? 'default' : 'ghost'}
                         onClick={() => setView('usuario')}
+                        className={view === 'usuario' ? 'bg-green-600 hover:bg-green-700' : ''}
                     >
                         Usuário
                     </Button>
-                    <Button variant="ghost" onClick={logoutUser}>
+                    <Button variant="ghost" onClick={logoutUser} className="hover:bg-red-100 hover:text-red-700">
                         Sair
                     </Button>
                 </nav>

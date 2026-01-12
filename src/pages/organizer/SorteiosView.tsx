@@ -54,7 +54,7 @@ export default function SorteiosView() {
                     value={sorteioHook.state.campNome}
                     onChange={(e) => sorteioHook.updateState({ campNome: e.target.value })}
                 />
-                <Button onClick={handleStartSorteio} disabled={sorteioHook.state.loadingSorteio}>
+                <Button onClick={handleStartSorteio} disabled={sorteioHook.state.loadingSorteio} className="bg-green-600 hover:bg-green-700">
                     {sorteioHook.state.loadingSorteio ? 'Criando...' : 'Criar Sorteio'}
                 </Button>
             </div>

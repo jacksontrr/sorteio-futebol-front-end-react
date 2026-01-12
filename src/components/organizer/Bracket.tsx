@@ -104,7 +104,7 @@ export function Bracket({ campId, rounds, times, onSetWinner }: BracketProps) {
                                         </div>
                                     </div>
                                     <div className="mt-2 flex gap-2">
-                                        <Button onClick={() => handleSaveScore(ri, pi)}>
+                                        <Button onClick={() => handleSaveScore(ri, pi)} className="bg-green-600 hover:bg-green-700">
                                             Salvar
                                         </Button>
                                     </div>
