@@ -249,7 +249,7 @@ const PlayerFormComponent = forwardRef(function PlayerForm(
 
             {requireCodigo && (
                 <div>
-                    <Label>Código</Label>
+                    <Label>Código do Organizador</Label>
                     <Input {...register('codigo')} />
                     {errors.codigo && (
                         <p className="text-sm text-red-600 mt-1">{String(errors.codigo.message)}</p>
