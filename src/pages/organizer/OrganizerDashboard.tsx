@@ -3,14 +3,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { Download } from 'lucide-react';
 import JogadoresView from './JogadoresView';
 import SorteiosView from './SorteiosView';
 import UsuarioView from './UsuarioView';
 import { logout } from '@/services/auth';
 import { fetchUserData, type OrganizadorResponse } from '@/services/user';
+import { useInstallPrompt } from '@/hooks/useInstallPrompt';
 
 export default function OrganizerDashboard() {
     const navigate = useNavigate();
+    const { canInstall, installApp } = useInstallPrompt();
     const [view, setView] = React.useState<'times' | 'jogadores' | 'campeonatos' | 'usuario'>(
         'jogadores',
     );
@@ -46,6 +49,11 @@ export default function OrganizerDashboard() {
         }
     };
 
+    const handleInstall = async () => {
+        await installApp();
+        toast.success('Aplicativo adicionado à tela inicial!');
+    };
+
     return (
         <div className="min-h-screen flex flex-col md:flex-row mx-auto bg-gradient-to-br from-green-50/30 via-white to-blue-50/30">
             {/* Sidebar */}
@@ -67,6 +75,16 @@ export default function OrganizerDashboard() {
                         >
                             {userData.codigo}
                         </button>
+                        {canInstall && (
+                            <button
+                                onClick={handleInstall}
+                                className="w-full mt-2 px-3 py-2.5 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg font-medium text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 border border-green-400/50"
+                                title="Adicionar aplicativo à tela inicial"
+                            >
+                                <Download size={18} strokeWidth={2.5} />
+                                <span>Instalar App</span>
+                            </button>
+                        )}
                     </div>
                 ) : null}
                 <nav className="flex md:flex-col gap-2 overflow-x-auto">
@@ -91,7 +109,11 @@ export default function OrganizerDashboard() {
                     >
                         Usuário
                     </Button>
-                    <Button variant="ghost" onClick={logoutUser} className="hover:bg-red-100 hover:text-red-700">
+                    <Button
+                        variant="ghost"
+                        onClick={logoutUser}
+                        className="hover:bg-red-100 hover:text-red-700"
+                    >
                         Sair
                     </Button>
                 </nav>
@@ -103,7 +125,9 @@ export default function OrganizerDashboard() {
 
                 {view === 'jogadores' && <JogadoresView />}
                 {view === 'campeonatos' && <SorteiosView />}
-                {view === 'usuario' && <UsuarioView onLogout={logoutUser} onProfileUpdated={handleProfileUpdated} />}
+                {view === 'usuario' && (
+                    <UsuarioView onLogout={logoutUser} onProfileUpdated={handleProfileUpdated} />
+                )}
             </main>
         </div>
     );
