@@ -11,6 +11,7 @@ import UsuarioView from './UsuarioView';
 import { logout } from '@/services/auth';
 import { fetchUserData, type OrganizadorResponse } from '@/services/user';
 import { useInstallPrompt } from '@/hooks/useInstallPrompt';
+import packageJson from '../../../package.json';
 
 export default function OrganizerDashboard() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -61,7 +62,10 @@ export default function OrganizerDashboard() {
         <div className="min-h-screen flex flex-col md:flex-row mx-auto bg-gradient-to-br from-green-50/30 via-white to-blue-50/30">
             {/* Sidebar */}
             <aside className="w-full md:w-56 bg-gradient-to-br from-green-50 to-blue-50 md:border-r border-green-100 border-b p-3 md:p-4">
-                <div className="mb-2 text-lg font-semibold text-green-800">Organizador</div>
+                <div className="mb-2 flex items-center justify-between">
+                    <span className="text-lg font-semibold text-green-800">Organizador</span>
+                    <span className="text-xs text-gray-500 font-mono">v{packageJson.version}</span>
+                </div>
                 {loading ? (
                     <div className="mb-4 text-sm text-gray-500">Carregando...</div>
                 ) : userData ? (
