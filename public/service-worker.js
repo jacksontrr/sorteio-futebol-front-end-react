@@ -1,8 +1,8 @@
 const CACHE_NAME = 'futebolsort-v1';
+// Use relative paths so deployment under a base path (e.g., /futebol/) works
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/trophy.svg'
+  'index.html',
+  'trophy.svg'
 ];
 
 // Install event
@@ -57,7 +57,7 @@ self.addEventListener('fetch', (event) => {
 
         return response;
       }).catch(() => {
-        return caches.match('/index.html');
+        return caches.match('index.html');
       });
     })
   );
