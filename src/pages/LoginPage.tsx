@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '@/services/auth';
 import { toast } from 'sonner';
-import { Loader2, Trophy } from 'lucide-react';
+import { Loader2, Trophy, ChevronLeft } from 'lucide-react';
 
 const loginSchema = z.object({
     email: z.string().email('E-mail inválido'),
@@ -103,6 +103,16 @@ export default function Login() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 p-4">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="w-full max-w-md">
+                <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    onClick={() => navigate('/')}
+                    className="mb-4 flex items-center gap-2 text-gray-600 hover:text-green-600 transition-colors font-medium text-sm"
+                >
+                    <ChevronLeft className="h-4 w-4" />
+                    <span>Voltar</span>
+                </motion.button>
+
                 <div className="flex items-center justify-center gap-2 mb-6">
                     <Trophy className="h-10 w-10 text-green-600" />
                     <span className="text-3xl font-bold text-gray-900">FutebolSort</span>

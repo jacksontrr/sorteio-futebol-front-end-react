@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Trophy, Users, Shield, Zap, Calendar, TrendingUp } from 'lucide-react';
+import { Trophy, Users, Shield, Zap, Calendar, TrendingUp, Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 export default function LandingPage() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
             {/* Header/Navigation */}
@@ -17,10 +19,24 @@ export default function LandingPage() {
                         <Trophy className="h-8 w-8 text-green-600" />
                         <span className="text-2xl font-bold text-gray-900">FutebolSort</span>
                     </motion.div>
+                    
+                    {/* Mobile menu button */}
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="md:hidden p-2"
+                    >
+                        {isMenuOpen ? (
+                            <X className="h-6 w-6 text-gray-900" />
+                        ) : (
+                            <Menu className="h-6 w-6 text-gray-900" />
+                        )}
+                    </button>
+
+                    {/* Desktop menu */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="flex gap-4"
+                        className="hidden md:flex gap-4"
                     >
                         <Link to="/login">
                             <Button variant="ghost">Entrar</Button>
@@ -32,6 +48,27 @@ export default function LandingPage() {
                         </Link>
                     </motion.div>
                 </nav>
+
+                {/* Mobile menu */}
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="md:hidden mt-4 flex flex-col gap-3"
+                    >
+                        <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                            <Button variant="ghost" className="w-full justify-start">
+                                Entrar
+                            </Button>
+                        </Link>
+                        <Link to="/register" onClick={() => setIsMenuOpen(false)}>
+                            <Button className="w-full bg-green-600 hover:bg-green-700">
+                                Começar Grátis
+                            </Button>
+                        </Link>
+                    </motion.div>
+                )}
             </header>
 
             {/* Hero Section */}
