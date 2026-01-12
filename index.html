@@ -4,14 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./trophy.svg" />
     <link rel="manifest" href="./manifest.json" />
-    <script type="module">
-      const link = document.querySelector('link[rel="manifest"]');
-      if (link && import.meta.env.MODE === 'production') {
-        link.href = import.meta.env.BASE_URL + 'manifest.prod.json';
-      }
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#16a34a" />
+       <!-- iOS Home Screen icon (PNG recommended) -->
+       <link rel="apple-touch-icon" href="./trophy-180.png" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -22,9 +18,36 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script type="module">
+      // Use production manifest when building for prod
+      const link = document.querySelector('link[rel="manifest"]');
+      if (link && import.meta.env.MODE === 'production') {
+        link.href = import.meta.env.BASE_URL + 'manifest.prod.json';
+      }
+
+      // Optional in-page debugger: enable in dev or with ?debug
+      const enableEruda = import.meta.env.MODE !== 'production' || new URLSearchParams(location.search).has('debug');
+      if (enableEruda) {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/eruda';
+        s.onload = () => { eruda.init(); console.log('[debug] Eruda enabled'); };
+        document.body.appendChild(s);
+      }
+
+      console.log('[debug] MODE', import.meta.env.MODE);
+      console.log('[debug] BASE_URL', import.meta.env.BASE_URL);
+
       if ('serviceWorker' in navigator) {
         const swUrl = import.meta.env.BASE_URL + 'service-worker.js';
-        navigator.serviceWorker.register(swUrl);
+        console.log('[debug] Registering ServiceWorker at', swUrl);
+        navigator.serviceWorker.register(swUrl)
+          .then((reg) => {
+            console.log('[debug] SW registered, scope:', reg.scope);
+            return navigator.serviceWorker.getRegistrations();
+          })
+          .then((regs) => console.log('[debug] Existing SW registrations:', regs.map(r => r.scope)))
+          .catch((err) => console.error('[debug] SW registration failed', err));
+      } else {
+        console.warn('[debug] ServiceWorker not supported');
       }
     </script>
   </body>
