@@ -12,6 +12,16 @@ export default defineConfig(({ mode }) => ({
       "@": fileURLToPath(new URL("./src", (import.meta as any).url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Garantir que cada build gere nomes únicos
+        entryFileNames: `assets/[name].[hash].js`,
+        chunkFileNames: `assets/[name].[hash].js`,
+        assetFileNames: `assets/[name].[hash].[ext]`
+      }
+    }
+  },
   optimizeDeps: {
     include: ['@react-oauth/google'],
   },
