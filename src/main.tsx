@@ -12,6 +12,7 @@ import SorteioPublicView from './pages/SorteioPublicView';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import { Toaster } from '@/components/ui/sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { IOSInstallPrompt } from './components/IOSInstallPrompt';
 
 const VITE_GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 const BASE_URL = import.meta.env.BASE_URL || '/';
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
             <RouterProvider router={router} />
             <Toaster richColors position="top-right" duration={3000} />
+            <IOSInstallPrompt />
         </GoogleOAuthProvider>
     </React.StrictMode>,
 );
