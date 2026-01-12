@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./trophy.svg" />
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/futebol/trophy.svg" />
+    <link rel="manifest" href="/futebol/manifest.prod.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#16a34a" />
-       <!-- iOS Home Screen icon (PNG recommended) -->
-       <link rel="apple-touch-icon" href="./trophy-180.png" />
+      <!-- iOS Home Screen icon (PNG recommended) -->
+      <link rel="apple-touch-icon" href="/futebol/trophy-180.png" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -18,14 +18,17 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script type="module">
-      // Use production manifest when building for prod
+      // Fixed base path for production
+      const base = '/futebol/';
+
+      // Ensure manifest uses the fixed base
       const link = document.querySelector('link[rel="manifest"]');
-      if (link && import.meta.env.MODE === 'production') {
-        link.href = import.meta.env.BASE_URL + 'manifest.prod.json';
+      if (link) {
+        link.href = base + 'manifest.prod.json';
       }
 
       if ('serviceWorker' in navigator) {
-        const swUrl = import.meta.env.BASE_URL + 'service-worker.js';
+        const swUrl = base + 'service-worker.js';
         navigator.serviceWorker.register(swUrl).catch(() => {
           // Quietly ignore registration errors in production; use dev tools if needed
         });
