@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
+import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import RecuperarSenhaPage from './pages/RecuperarSenhaPage';
+import RedefinirSenhaPage from './pages/RedefinirSenhaPage';
 import OrganizerDashboard from './pages/organizer/OrganizerDashboard';
 import SorteioPublicView from './pages/SorteioPublicView';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
@@ -15,9 +18,11 @@ const BASE_URL = import.meta.env.BASE_URL || '/';
 
 // Definição das rotas
 const router = createBrowserRouter([
-    { path: '/', element: <Navigate to="/login" replace /> },
+    { path: '/', element: <LandingPage /> },
     { path: '/login', element: <PublicRoute element={<LoginPage />} /> },
     { path: '/register', element: <PublicRoute element={<RegisterPage />} /> },
+    { path: '/recuperar-senha', element: <PublicRoute element={<RecuperarSenhaPage />} /> },
+    { path: '/redefinir-senha', element: <PublicRoute element={<RedefinirSenhaPage />} /> },
     { path: '/organizer', element: <ProtectedRoute element={<OrganizerDashboard />} /> },
     { path: '/sorteio/:id', element: <SorteioPublicView /> },
 ], {
