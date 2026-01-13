@@ -295,13 +295,17 @@ export default function JogadoresView() {
                 selected={selectedJogador}
                 times={times}
                 onSave={async (payload) => {
-                    if (selectedJogador) {
+                    const isEditing = !!selectedJogador;
+                    if (isEditing) {
                         await putJogador(selectedJogador.id, payload as PlayerFormData);
                     } else {
                         await postJogador(payload as PlayerFormData);
                     }
                     await loadJogadores(search);
-                    setShowPlayerModal(false);
+                    
+                    if (isEditing) {
+                        setShowPlayerModal(false);
+                    }
                     setSelectedJogador(null);
                 }}
             />

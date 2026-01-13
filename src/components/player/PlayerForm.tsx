@@ -113,7 +113,6 @@ const PlayerFormComponent = forwardRef(function PlayerForm(
                         destaque: data.destaque,
                         peso: data.peso,
                     };
-                    console.log(data, payload);
 
                     Promise.resolve(onSubmit(payload))
                         .then(() => {

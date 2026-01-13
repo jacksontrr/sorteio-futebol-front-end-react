@@ -77,7 +77,6 @@ export default function PlayerDialog({ open, onOpenChange, selected, onSave }: P
                                         const data = await formRef.current?.submit();
                                         if (!data) return;
                                         await onSave(data);
-                                        onOpenChange(false);
                                     } catch (err) {
                                         console.error('Erro ao salvar jogador no dialog:', err);
                                     }
